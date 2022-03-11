@@ -4,6 +4,8 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +26,8 @@ class PagamentoController {
 
 	private PagamentoRepository pagamentoRepo;
 	private ClienteRestDoPedido pedidoCliente;
+	
+	private static final Logger LOG = LoggerFactory.getLogger(PagamentoController.class);
 
 	@GetMapping
 	ResponseEntity<List<PagamentoDto>> lista() {
@@ -42,6 +46,7 @@ class PagamentoController {
 
 	@PostMapping
 	ResponseEntity<PagamentoDto> cria(@RequestBody Pagamento pagamento, UriComponentsBuilder uriBuilder) {
+		LOG.info("CRIANDO PAGAMENTO");
 		pagamento.setStatus(Pagamento.Status.CRIADO);
 		Pagamento salvo = pagamentoRepo.save(pagamento);
 		URI path = uriBuilder.path("/pagamentos/{id}").buildAndExpand(salvo.getId()).toUri();
