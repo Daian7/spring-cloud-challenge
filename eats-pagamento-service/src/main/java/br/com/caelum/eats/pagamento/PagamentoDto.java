@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-class PagamentoDto {
+public class PagamentoDto {
 
 	private Long id;
 	private BigDecimal valor;
@@ -21,7 +21,7 @@ class PagamentoDto {
 	private Long formaDePagamentoId;
 	private Long pedidoId;
 
-	PagamentoDto(Pagamento p) {
+	public PagamentoDto(Pagamento p) {
 		this(p.getId(), p.getValor(), p.getNome(), p.getNumero(), p.getExpiracao(), p.getCodigo(), p.getStatus(), p.getFormaDePagamentoId(), p.getPedidoId());
 	}
 
