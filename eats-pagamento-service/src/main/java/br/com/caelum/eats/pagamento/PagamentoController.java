@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import br.com.caelum.eats.pagamento.service.PagamentoService;
 import lombok.AllArgsConstructor;
 
 @RestController
@@ -25,7 +27,9 @@ import lombok.AllArgsConstructor;
 class PagamentoController {
 
 	private PagamentoRepository pagamentoRepo;
-	private ClienteRestDoPedido pedidoCliente;
+	
+	@Autowired
+	private PagamentoService pagamentoService;
 	
 	private static final Logger LOG = LoggerFactory.getLogger(PagamentoController.class);
 
@@ -55,11 +59,7 @@ class PagamentoController {
 
 	@PutMapping("/{id}")
 	PagamentoDto confirma(@PathVariable("id") Long id) {
-		Pagamento pagamento = pagamentoRepo.findById(id).orElseThrow(ResourceNotFoundException::new);
-		pagamento.setStatus(Pagamento.Status.CONFIRMADO);
-		pedidoCliente.notificaPagamentoDoPedido(pagamento.getPedidoId());
-		pagamentoRepo.save(pagamento);
-		return new PagamentoDto(pagamento);
+		return pagamentoService.confirmaPagamento(id);
 	}
 
 	@DeleteMapping("/{id}")
