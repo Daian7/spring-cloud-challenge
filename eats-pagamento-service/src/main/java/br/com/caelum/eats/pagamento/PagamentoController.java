@@ -2,7 +2,6 @@ package br.com.caelum.eats.pagamento;
 
 import java.net.URI;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,17 +34,12 @@ class PagamentoController {
 
 	@GetMapping
 	ResponseEntity<List<PagamentoDto>> lista() {
-		return ResponseEntity.ok(pagamentoRepo.findAll()
-				.stream()
-				.map(PagamentoDto::new)
-				.collect(Collectors.toList()));
+		return pagamentoService.getAll();
 	}
 
 	@GetMapping("/{id}")
 	PagamentoDto detalha(@PathVariable("id") Long id) {
-		return pagamentoRepo.findById(id)
-				.map(PagamentoDto::new)
-				.orElseThrow(ResourceNotFoundException::new);
+		return pagamentoService.getById(id);
 	}
 
 	@PostMapping
