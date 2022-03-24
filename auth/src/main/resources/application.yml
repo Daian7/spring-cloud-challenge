@@ -1,0 +1,10 @@
+server:
+  port: 8088
+  
+security:
+  oauth2:
+    client:
+      scope:
+      - password
+      client-id: gateway
+      client-secret: 1234
